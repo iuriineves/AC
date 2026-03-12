@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.ac.ALUTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-03-12T11:42:14" hostname="FCT-PC1302" time="0.014">
+  <properties/>
+  <testcase name="add()" classname="org.ac.ALUTest" time="0.014"/>
+  <system-out><![CDATA[7
+-62
+-128
+-127
+127
+0
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

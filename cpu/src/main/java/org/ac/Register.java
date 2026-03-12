@@ -30,7 +30,7 @@ public class Register {
         this(GP_REGISTER_SIZE);
     }
 
-    private int size() {
+    public int size() {
         return this.bits.length;
     };
 
@@ -38,7 +38,7 @@ public class Register {
         return integer % 2 == 1;
     }
 
-    private int integer(boolean bool) {
+    public static int integer(boolean bool) {
         if (bool) return 1; else return 0;
     }
 
@@ -70,6 +70,7 @@ public class Register {
      * Stores an integer using an N-bit two’s complement representation.
      */
     public void set(int value) {
+        if (value < 0) value += 256;
         int i = 1;
         while (value >= 0 && i <= this.size()) {
             setBit(size() - i++, bool(value));
@@ -93,9 +94,16 @@ public class Register {
      *  Interprets the register contents as a signed integer in two’s complement.
      */
     public int getInt() {
-        // TODO
-        int todo = 0;
-        return todo;
+        int s_int = 0;
+        for (int i = 1; i < size(); i++) {
+            boolean bit = getBit(i);
+            if (getBit(0)) bit = !bit;
+            if (bit) s_int += Math.pow(2, this.size() - (i + 1));
+        }
+        if (getBit(0)) {
+            s_int = (s_int + 1) * -1;
+        }
+        return s_int;
     }
 
     /**

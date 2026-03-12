@@ -6,6 +6,13 @@ import static org.ac.Register.GP_REGISTER_SIZE;
  * The class the implements the Arithmetic and Login Unit (ALU)
  */
 public class ALU {
+    
+    enum Flags {
+        NEGATIVE,
+        ZERO,
+        CARRY,
+        OVERFLOW
+    }
 
     /**
      *  Flags register.
@@ -22,7 +29,9 @@ public class ALU {
      * Assume that both registers have the same size.
      */
     public void not(Register out, Register in) {
-        // TODO
+        out.set(~in.getInt());
+        setNegativeFlag(out.getBit(0));
+        setZeroFlag(out.getInt() == 0);
     }
 
     /**
@@ -30,7 +39,9 @@ public class ALU {
      * Assume that all registers have the same size.
      */
     public void and(Register out, Register in1, Register in2) {
-        // TODO
+        out.set(in1.getInt() & in2.getInt());
+        setNegativeFlag(out.getBit(0));
+        setZeroFlag(out.getInt() == 0);
     }
 
     /**
@@ -38,7 +49,9 @@ public class ALU {
      * Assume that all registers have the same size.
      */
     public void or(Register out, Register in1, Register in2) {
-        // TODO
+        out.set(in1.getInt() | in2.getInt());
+        setNegativeFlag(out.getBit(0));
+        setZeroFlag(out.getInt() == 0);
     }
 
     /**
@@ -46,7 +59,7 @@ public class ALU {
      * Assume that all registers have the same size.
      */
     public void xor(Register out, Register in1, Register in2) {
-        // TODO
+        out.set(in1.getInt() ^ in2.getInt());
     }
 
     /**
@@ -54,7 +67,12 @@ public class ALU {
      * Assume that both registers have the same size.
      */
     public void lsl(Register out, Register in, int n) {
-        // TODO
+        out.set(in.getInt() << n);
+
+        setNegativeFlag(out.getBit(0));
+        setZeroFlag(out.getInt() == 0);
+        setCarryFlag(in.getBit(n-1));
+        setOverflowFlag(in.getBit(n) ^ carryFlag());
     }
 
     /**
@@ -62,7 +80,7 @@ public class ALU {
      * Assume that both registers have the same size.
      */
     public void neg(Register out, Register in) {
-        // TODO
+        out.set(~in.getInt()+1);
     }
 
     /**
@@ -70,43 +88,65 @@ public class ALU {
      * Assume that all registers have the same size.
      */
     public void add(Register out, Register in1, Register in2) {
-        // TODO
+        boolean carry_in = false;
+        boolean carry_out = false;
+
+        for (int i = out.size()-1; i >= 0; i--) {
+            carry_in = carry_out;
+            boolean bit1 = in1.getBit(i);
+            boolean bit2 = in2.getBit(i);
+            boolean value = bit1 ^ bit2 ^ carry_in;
+            carry_out = ((carry_in && (bit1 || bit2)) || (bit1 && bit2));
+            out.setBit(i, value);
+        }
+        setNegativeFlag(out.getBit(0));
+        setZeroFlag(out.getInt() == 0);
+        setCarryFlag(carry_out);
+        setOverflowFlag(carry_in ^ carry_out);
+        System.out.println(out.getInt());
+
     }
 
     /**
      * Return the value of the Negative flag
      */
     public boolean negativeFlag() {
-        // TODO
-        boolean todo = false;
-        return todo;
+        return NZCV.getBit(Flags.NEGATIVE.ordinal());
+    }
+
+    private void setNegativeFlag(boolean flag) {
+        NZCV.setBit(Flags.NEGATIVE.ordinal(), flag);
     }
 
     /**
      * Return the value of the Zero flag
      */
     public boolean zeroFlag() {
-        // TODO
-        boolean todo = false;
-        return todo;
+        return NZCV.getBit(Flags.ZERO.ordinal());
+    }
+
+    private void setZeroFlag(boolean flag) {
+        NZCV.setBit(Flags.ZERO.ordinal(), flag);
     }
 
     /**
      * Return the value of the Carry flag
      */
     public boolean carryFlag() {
-        // TODO
-        boolean todo = false;
-        return todo;
+        return NZCV.getBit(Flags.CARRY.ordinal());
     }
 
+    private void setCarryFlag(boolean flag) {
+        NZCV.setBit(Flags.CARRY.ordinal(), flag);
+    }
     /**
      * Return the value of the Overflow flag
      */
     public boolean overflowFlag() {
-        // TODO
-        boolean todo = false;
-        return todo;
+        return NZCV.getBit(Flags.OVERFLOW.ordinal());
     }
 
+    private void setOverflowFlag(boolean flag) {
+        NZCV.setBit(Flags.OVERFLOW.ordinal(), flag);
+    }
 }
