@@ -1,0 +1,12 @@
+.data
+    .w 10
+.code
+    ld r5, 0
+    li r2, 22
+    li r3, -1
+    add .b r3, r2, r5
+    or r3, r2, r5
+
+# terminate program
+    li r1, 0
+    syscall 0

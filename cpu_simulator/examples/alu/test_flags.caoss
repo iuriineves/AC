@@ -1,0 +1,18 @@
+.data
+
+.code
+    li r1, 20
+    li r2, 44
+    sub r3, r1, r2 # negative
+    sub r7, r3, r3 # zero
+
+    li r1, 1024
+
+    add r7, r1, r2 # carry
+
+    li r1, 32767
+    add r7, r1, r2 # overflow
+
+# terminate program
+    li r0, 0
+    syscall 0

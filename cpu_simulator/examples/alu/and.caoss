@@ -1,0 +1,10 @@
+.data
+
+.code
+    li r1, 5
+    li r2, 6
+    and r3, r1, r2
+
+# terminate program
+    li r1, 0
+    syscall 0

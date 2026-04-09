@@ -1,0 +1,27 @@
+.data
+    .w 6      # data[0] = multiplicand
+    .w 5      # data[2] = multiplier
+    .w 0      # data[4] = result
+
+.code
+    # Load operands
+    ld r1, 0      # 0:  r1 <- multiplicand
+    ld r2, 2      # 2: r2 <- multiplier
+    li r0, 0        # 4: r0 <- 0
+    li r3, 0        # 6: r3 <- result = 0
+    li r5, 1        # 8 r1 <- 1
+
+#loop: 10
+    sub r4, r2, r0   # 10: r4 <- r2 - 0
+    bz 6             # 12: if r4 == 0, exit loop; goto 20
+
+    add r3, r1, r3   # 14: r3 = r3 + r1
+    sub r2, r2, r5   # 16: r2 = r2 - 1
+    jmp 10          # 18: jump to loop
+
+#end: 20
+    st r3, 4 # 20 : store result
+
+    # terminate program
+    li r0, 0
+    syscall 0

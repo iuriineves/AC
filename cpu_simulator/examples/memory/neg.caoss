@@ -1,0 +1,11 @@
+.data
+    .w 10
+    .w 0
+.code
+    ld r1, 0
+    neg r2, r1
+    st r2, 2
+
+# terminate program
+    li r0, 0
+    syscall 0

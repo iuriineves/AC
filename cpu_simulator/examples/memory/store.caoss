@@ -1,0 +1,18 @@
+.data
+  .w 50000
+  .w 0
+  .w 0
+  .w 0
+  .w 0
+  .w 0
+  .w 0
+  .w 0
+
+
+.code
+   li r2, 502
+   st r2, 8
+
+# terminate program
+    li r0, 0
+    syscall 0

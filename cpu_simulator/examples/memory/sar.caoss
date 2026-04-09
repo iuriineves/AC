@@ -1,0 +1,12 @@
+.data
+    .w -2
+    .w 0
+.code
+    ld r1, 0
+    li r2, 1
+    sra r3, r1, r2  # r3 = r1 >> r2, r3 should contain -1
+    st r3, 2
+
+# terminate program
+    li r0, 0
+    syscall 0
